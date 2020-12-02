@@ -1,0 +1,31 @@
+<script src="jquery-2.2.4.min.js"></script>
+<script src="ygrab.js"></script>
+<script>        
+$(function() {
+
+var data = [
+    {
+        url: 'https://www.last.fm/music/Die+Antwoord/%2Btracks', // url string rquired
+        selector: 'td.chartlist-play', // selector string rquired
+        loop: true, // each boolean rquired
+        result: [
+			            {
+			                name: 'id', // key string rquired
+			                find: 'a', // selector child string rquired
+			                grab: {
+			                    by: 'attr', // attribut string rquired
+			                    value: 'data-youtube-id' // attribut value string optional
+			                }
+			            }			    
+			        ]
+    },
+    // ---- new website url ---- //
+];
+
+ygrab(data, function(result) {
+	console.log(JSON.stringify(result, null, 2));
+});
+
+
+});
+</script>

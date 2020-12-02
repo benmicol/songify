@@ -1,0 +1,156 @@
+html, body {
+	padding:0;
+	margin:0;
+	background-color: black;
+	font-family: arial;
+}
+main {
+	background-color: black;
+	display: flex;
+	flex-flow: column;
+	color: white;
+	font-size: calc(1vw + 1vh);
+	height: 100vh;
+}
+header {
+	margin: auto;
+}
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+iframe {
+	display: none;
+}
+h1 a {
+	text-decoration: none;
+	color: white;
+}
+h1 {
+	font-size: calc(2vw + 6vh);
+	margin: 0;
+	padding: 1%;
+}
+.container {
+	/*min-height: 10vh;
+	width: 100%;
+	margin-bottom: 3px;*/
+    display: flex;
+    flex-flow: column;
+	background-color: black;
+	justify-content: space-between;
+	margin: auto;
+	width: 100%;
+}
+.music {
+	display: flex;
+	width: 100%;
+	height: 100%;
+}
+.input {
+	display: flex;
+	flex-flow: column;
+	margin: auto;
+	width: 100%;
+}
+header {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	background-color: black;
+}
+.player {
+	display: flex;
+	position: fixed;
+	bottom: 0;
+	background-color: black;
+	width: 100%;
+	justify-content: space-between;
+	height: 20vh;
+}
+.player h2 {
+	margin: auto;
+}
+.list {
+	display: flex;
+	flex-flow: row wrap;
+	min-height: 10vh;
+	margin: auto;
+	justify-content: space-evenly;
+}
+.list li {
+	display: flex;
+	cursor: pointer;
+}
+.item{
+	border-radius: 0.5rem;
+	align-self: center;
+	padding-top: 2vmin;
+	display: flex;
+}
+.wide {
+	width: 90%;
+	justify-content: space-between;
+	margin: auto;
+	border-bottom: 2px solid #333;
+}
+.item p {
+	font-size: calc(2vw + 4vh);
+}
+.item img {
+	margin: auto;
+}
+.textInput {
+	background-color: lightgray;
+	border: none;
+	border-radius: 0.2rem;
+	margin: auto;
+	font-size: calc(2vw + 5vh);
+	max-width: 75vw;
+}
+.buttonInput {
+	border-radius: 0.2rem;
+	border: 2px solid lightgray;
+	background: none;
+	color: white;
+	cursor: pointer;
+	min-height: 4vmin;
+	min-width: 4vmin;
+	margin: auto 0 auto 10px;
+	font-size: calc(2vw + 5vh);
+}
+#album {
+	margin-left: 1%;
+}
+.ytImage {
+	width: 15vmin;
+	margin-left: 10%;
+	margin-right: 10%;
+}
+#youtube-icon {
+	width: 20vmin;
+}
+#poster {
+	object-fit: contain;
+	max-width: 10vw;
+}
+.poster {
+	min-width: 300px;
+}
+.imgdiv {
+	display: flex;
+}
+#nowPlaying {
+	margin: auto;
+	font-size: calc(2vw + 3vh);
+	text-align: center;
+}
+.player2 h2 {
+	font-size: calc(2vw + 5vh);
+}
+#youtube-audio {
+	padding-top: 0;
+}

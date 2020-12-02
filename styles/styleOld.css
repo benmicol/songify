@@ -1,0 +1,200 @@
+html, body {
+	padding:0;
+	margin:0;
+	background-color: black;
+	font-family: arial;
+}
+main {
+	background-color: black;
+	display: flex;
+	flex-flow: column;
+	color: white;
+	font-size: calc(1vw + 1vh);
+}
+header {
+	margin: auto;
+}
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+iframe {
+	display: none;
+}
+.poster {
+	position: absolute;
+	width: 90%;
+	display: flex;
+	z-index: -1;
+	justify-content: center;
+	height: 62%;
+	opacity: 0.5;
+}
+.poster img {
+	object-fit: contain;
+}
+.disappear {
+	display: flex;
+}
+.tierlist {
+	width: 90vw;
+	background-color: rgba(0,0,0,1);
+	margin: auto;
+	display: flex;
+	flex-flow: column;
+	z-index: 0;
+}
+.row {
+	min-height: 10vh;
+    width: 100%;
+    display: flex;
+    flex-flow: row;
+    margin-bottom: 3px;
+    background-color: rgba(50, 50, 50,0.5);
+}
+
+.letter{
+	width: 10vmax;
+	text-align: center;
+	display: flex;
+	color: black;
+	border-right: 4px solid black;
+}
+.letter p {
+	margin: auto;
+	font-size: calc(2vw + 2vh);
+}
+#letterS {
+	background-color: rgb(255, 118, 118);
+}
+#letterA {
+	background-color: rgb(255, 196, 138);
+}
+#letterB {
+	background-color: rgb(255, 227, 141);
+}
+#letterC {
+	background-color: rgb(157, 248, 157);
+}
+#letterD {
+	background-color: rgb(118, 248, 248);
+}
+.items {
+	width: 80vmax;
+	margin: auto;
+}
+.list {
+	display: flex;
+	flex-flow: row wrap;
+	min-height: 10vh;
+}
+.list li {
+	display: flex;
+	cursor: pointer;
+}
+.item{
+	border-radius: 0.5rem;
+	align-self: center;
+	padding: 2vmin;
+}
+.item p {
+	font-size: calc(1vw + 1vh);
+	text-align: center;
+	margin: auto;
+}
+.textInput {
+	background-color: lightgray;
+	border: none;
+	border-radius: 0.2rem;
+	margin: auto;
+	font-size: calc(1vw + 1vh);
+	max-width: 20vw;
+}
+#listTitle {
+	background: none;
+	color: white;
+	font-size: calc(3vw + 3vh);
+	text-align: center;
+	min-width: 90vw;
+	margin: 1vmin;
+}
+::placeholder {
+	color: gray;
+	opacity: 1;
+	}
+.buttonInput {
+	border-radius: 0.2rem;
+	border: 2px solid lightgray;
+	background: none;
+	color: white;
+	cursor: pointer;
+	min-height: 4vmin;
+	min-width: 4vmin;
+	margin: auto 0 auto 10px;
+	font-size: calc(1vw + 1vh);
+}
+#addButtonT {
+	width: 14vw;
+}
+.screenshot {
+	position: fixed;
+	display: none;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0,0,0,0.9);
+	z-index: 2;
+	cursor: pointer;
+	flex-flow: column;
+}
+.canvas {
+	width: 80%;
+	height: 80%;
+	overflow: scroll;
+	margin: auto;
+	display: flex;
+	justify-content: center;
+}
+#screenButtonDiv {
+	display: flex;
+	justify-content: center;
+	padding: 2vmin 0;
+}
+.screenInstruct {
+	color: white;
+	margin: auto;
+	font-size: calc(2vw + 2vh);
+	text-align: center;
+}
+.userImage {
+	max-height: 20vh;
+	max-width: 20vw;
+}
+#album {
+	margin-left: 1%;
+}
+#trackletter {
+	color: white;
+	display: flex;
+	flex-flow: column;
+	justify-content: space-evenly;
+}
+.ytImage {
+	max-width: 3vmin;
+	margin-left: 10%;
+	margin-right: 10%;
+}
+#youtube-icon {
+	max-width: 5vmin;
+}
+#poster {
+	object-fit: contain;
+	max-width: 10vw;
+}
+.imgdiv {
+	display: flex;
+}
