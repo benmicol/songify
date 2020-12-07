@@ -3,6 +3,7 @@
 <head>
 	<title>Songify</title>
 	<link rel="stylesheet" type="text/css" href="styles/style.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png">
@@ -12,6 +13,7 @@
 <body>
 <main>
 <header>
+	<div id="back"><</div>
 	<h1><a href="https://benmicol.com/songify">Songify</a></h1>
 </header>
 <div><h1><a href="https://benmicol.com/songify">Songify</a></h1></div>
@@ -43,9 +45,41 @@
 </div>
 <div class="player" id="playerDiv">
 	<div class="poster"></div>
-	<div id="nowPlaying"></div>
+	
+	<div id="controls">
+		<div id="nowPlaying"></div>
+		<div id="progress">
+			<input type="range" id="progress-bar" value="0">
+			</div>
+		<ul>
+			<li>
+				<p id="timer"><span id="current-time">0:00</span> / <span id="duration">0:00</span></p>			
+			</li>
+			<!--<li>
+				<input type="range" id="progress-bar" value="0">
+			</li>-->
+			<li>
+				<i id="play" class="material-icons">play_arrow</i>
+			</li>
+			<li>
+				<i id="pause" class="material-icons">pause</i>
+			</li>
+			<li>
+				<i id="mute-toggle" class="material-icons">volume_up</i>
+			</li>
+			<!--<li>				
+				<input id="volume-input" type="number" max="100" min="0">
+			</li>
+			<li>
+				<i id="next" class="material-icons">fast_forward</i>	
+			</li>-->
+		</ul>
+		
+	</div>
 	<div id="youtube-audio" class="item" data-autoplay="0" data-loop="1" data-video="">
-		<div id="youtube-player"></div>					
+		<div id="youtube-player">
+			<div id="youtube-player"></div>
+		</div>					
 	</div>
 </div>
 <div class="player2" id="playerDiv2">

@@ -1,5 +1,7 @@
 clearText();
 eventListeners();
+var r,
+    time_update_interval = 0;
 
 function clearText() {
 	document.getElementById('artist').value = "";
@@ -10,6 +12,11 @@ function eventListeners() {
 	document.querySelector('#addButtonT').addEventListener('click', addAlbums);
 	document.querySelector('#addButtonU').addEventListener('click', getTracks);
 	document.querySelector('#addButtonV').addEventListener('click', getSong);
+	document.querySelector('#back').addEventListener('click', function(){
+		document.querySelector('.input').style.display = "flex";
+		document.querySelector('#trackList').style.display = "none";
+		clearText();
+	})
 
 	document.querySelector('#artist').addEventListener('keydown', event => {
 		if (event.isComposing || event.keyCode === 229) {
@@ -35,43 +42,40 @@ function titleCase(myStr) {
 	return myStr.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(' ');
 }
 
-function getSong() {
-	const trackList = document.querySelector('#trackList');
-	trackList.style.justifyContent = "space-between";
-	let song = document.getElementById('song').value;
-	trackList.innerHTML=" ";
-	let youtubeAudio = document.querySelector('#youtube-audio');
-	youtubeAudio.innerHTML = '<div id="youtube-player"></div>';
-	let nowPlaying = document.querySelector('#nowPlaying');
-  	/*nowPlaying.id = 'nowPlaying';*/
-  	nowPlaying.innerHTML="Song not found, please try again."
-  	/*youtubeAudio.appendChild(nowPlaying);*/
-	let playerBtn = document.createElement('img');
-  	playerBtn.src = "icons/play.png";
-  	playerBtn.className = "ytImage";
-  	playerBtn.setAttribute("id", "youtube-icon");
-  	youtubeAudio.appendChild(playerBtn);
-  	
-	fetch('https://ws.audioscrobbler.com/2.0/?method=track.search&track='+ song +'&api_key=cb44e36a7f8b0c6427b01d4de757a2ad&format=json', {mode: 'cors'})
+function trackInfo(id,artist, song){
+	console.log(song)
+	fetch('https://ws.audioscrobbler.com/2.0/?method=track.getInfo&artist='+artist+'&track='+ song +'&api_key=cb44e36a7f8b0c6427b01d4de757a2ad&format=json', {mode: 'cors'})
     	.then(function(response) {
       		return response.json();
     	})
     	.then(function(lastFM) {
-			console.log(lastFM.results.trackmatches.track)
-			
-			let trackURL = 'https://www.last.fm/search/tracks?q='+song;
-			let postersrc = lastFM.results.trackmatches.track[0].image[3]["#text"];
-			let posterdiv = document.createElement('div');
-			posterdiv.className = "poster";
+			document.getElementById(id).setAttribute('data-poster', lastFM.track.album.image[3]["#text"]);
+			postersrc = lastFM.track.album.image[3]["#text"]
+			let posterdiv = document.querySelector('.poster');
+			/*posterdiv.className = "poster";*/
 			let poster = document.createElement('img');
 			/*poster.id = 'poster';*/
 			poster.src = postersrc;
 			let playerDiv = document.querySelector('#playerDiv');
 			/*playerDiv.appendChild(poster)*/
+			posterdiv.innerHTML = "";
 			posterdiv.appendChild(poster);
-			/*document.querySelector('main').appendChild(posterdiv);*/
+			posterdiv.style.display = "flex";
+		})
+}
 
-			document.querySelector('#nowPlaying').innerHTML = lastFM.results.trackmatches.track[0].name;
+function getSong() {
+	const trackList = document.querySelector('#trackList');
+	trackList.style.justifyContent = "space-between";
+	let song = document.getElementById('song').value;
+	trackList.innerHTML=" ";  	
+	fetch('https://ws.audioscrobbler.com/2.0/?method=track.search&track='+ song +'&api_key=cb44e36a7f8b0c6427b01d4de757a2ad&format=json', {mode: 'cors'})
+    	.then(function(response) {
+      		return response.json();
+    	})
+    	.then(function(lastFM) {
+			let trackURL = 'https://www.last.fm/search/tracks?q='+song;
+			//let postersrc = lastFM.results.trackmatches.track[0].image[3]["#text"];
 			let data = [
 			    {
 			        url: trackURL, // url string rquired
@@ -96,6 +100,10 @@ function getSong() {
 				track.className = "item wide";
 				track.id = 'track'+i
 				track.innerHTML = "<p>"+trackName+" - "+artistName+"</p>";
+				//track.setAttribute('data-poster', postersrc);
+				track.setAttribute('data-artist', artistName);
+				track.setAttribute('data-track', trackName);
+				track.addEventListener('click', newSetVideo);
 				trackList.appendChild(track);
 				let imgdiv = document.createElement('div');
 				imgdiv.className = "imgdiv";
@@ -106,12 +114,12 @@ function getSong() {
 				playBtn.className = "ytImage";
 				playBtn.setAttribute("id", "youtube-icon"+i);
 				playBtn.setAttribute("data-html2canvas-ignore","");
-				playBtn.addEventListener('click', setVideo);
+				playBtn.addEventListener('click', newSetVideo);
 				imgdiv.appendChild(playBtn);
 		  	};
 			ygrab(data, async function(result) {
 				let trackIds = result;
-				document.querySelector('#youtube-audio').setAttribute('data-video', trackIds[0].id);
+				
 				for (let i = 0; i < lastFM.results.trackmatches.track.length; i++) {
 					let vidId = trackIds[i].id;
 					var e = document.getElementById("track"+i);
@@ -119,10 +127,15 @@ function getSong() {
 					e.setAttribute('data-video', vidId);
 					let icon = document.querySelector('#youtube-icon'+i);
 					icon.id = vidId;
+					
 				};
-			await createPlayer();
+				if (r == undefined) {
+				
+					await createPlayer();
+				}
 			});
 			document.querySelector('.input').style.display = "none";
+			trackList.style.display = "flex";
 			  /*document.querySelector('#listTitle').value = titleCase(album);*/
 		}
 		)};
@@ -132,38 +145,13 @@ function getTracks() {
 	trackList.style.justifyContent = "space-between";
 	let artist = document.getElementById('tracks').value;
 	trackList.innerHTML=" ";
-	let youtubeAudio = document.querySelector('#youtube-audio');
-	youtubeAudio.innerHTML = '<div id="youtube-player"></div>'
-	let nowPlaying = document.querySelector('#nowPlaying');
-  	/*nowPlaying.id = 'nowPlaying';*/
-  	nowPlaying.innerHTML="Song not found, please try again."
-  	/*youtubeAudio.appendChild(nowPlaying);*/
-	let playerBtn = document.createElement('img');
-  	playerBtn.src = "icons/play.png";
-  	playerBtn.className = "ytImage";
-  	playerBtn.setAttribute("id", "youtube-icon");
-  	youtubeAudio.appendChild(playerBtn);
 	fetch('https://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist='+ artist +'&api_key=cb44e36a7f8b0c6427b01d4de757a2ad&format=json', {mode: 'cors'})
     	.then(function(response) {
       		return response.json();
     	})
-    	.then(function(lastFM) {
-			console.log(lastFM.toptracks.track.length)
-			
+    	.then(function(lastFM) {			
 			let trackURL = lastFM.toptracks.track[0].artist.url+"/%2Btracks";
-			console.log(trackURL)
 			let postersrc = lastFM.toptracks.track[0].image[3]["#text"];
-			let posterdiv = document.createElement('div');
-			posterdiv.className = "poster";
-			let poster = document.createElement('img');
-			/*poster.id = 'poster';*/
-			poster.src = postersrc;
-			let playerDiv = document.querySelector('#playerDiv');
-			/*playerDiv.appendChild(poster)*/
-			posterdiv.appendChild(poster);
-			/*document.querySelector('main').appendChild(posterdiv);*/
-
-			document.querySelector('#nowPlaying').innerHTML = lastFM.toptracks.track[0].name;
 			let data = [
 			    {
 			        url: trackURL, // url string rquired
@@ -187,22 +175,27 @@ function getTracks() {
 				track.className = "item wide";
 				track.id = 'track'+i
 				track.innerHTML = "<p>"+trackName+"</p>";
+				track.setAttribute('data-poster', postersrc);
+				track.setAttribute('data-artist', artist);
+				track.setAttribute('data-track', trackName);
+				track.addEventListener('click', newSetVideo);
 				trackList.appendChild(track);
-				let imgdiv = document.createElement('div');
-				imgdiv.className = "imgdiv";
-				track.appendChild(imgdiv);
 				let player = document.querySelector('#youtube-audio');
 				let playBtn = document.createElement('img');
 				playBtn.src = "icons/play.png";
 				playBtn.className = "ytImage";
 				playBtn.setAttribute("id", "youtube-icon"+i);
 				playBtn.setAttribute("data-html2canvas-ignore","");
-				playBtn.addEventListener('click', setVideo);
+				playBtn.addEventListener('click', newSetVideo);
+				
+				let imgdiv = document.createElement('div');
+				imgdiv.className = "imgdiv";
 				imgdiv.appendChild(playBtn);
+				track.appendChild(imgdiv);
 		  	};
 			ygrab(data, async function(result) {
 				let trackIds = result;
-				document.querySelector('#youtube-audio').setAttribute('data-video', trackIds[0].id);
+				
 				for (let i = 0; i < lastFM.toptracks.track.length; i++) {
 					let vidId = trackIds[i].id;
 					var e = document.getElementById("track"+i);
@@ -211,15 +204,20 @@ function getTracks() {
 					let icon = document.querySelector('#youtube-icon'+i);
 					icon.id = vidId;
 				};
-			await createPlayer();
+				if (r == undefined) {
+					
+					await createPlayer();
+				}
 			});
 			document.querySelector('.input').style.display = "none";
+			trackList.style.display = "flex";
 			  /*document.querySelector('#listTitle').value = titleCase(album);*/
 		}
 		)};
 
 function addAlbums() {
 	const trackList = document.querySelector('#trackList');
+	trackList.innerHTML = "";
 	let artist = document.getElementById('artist').value;
 	fetch('https://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist='+artist+ '&api_key=cb44e36a7f8b0c6427b01d4de757a2ad&format=json', {mode: 'cors'})
     	.then(function(response) {
@@ -243,9 +241,8 @@ function addAlbums() {
 					trackList.appendChild(album);
 			  	};
 		})
-		document.querySelector('#disappearT').style.display = "none";
-		document.querySelector('#disappearV').style.display = "none";
 		document.querySelector('.input').style.display = "none";
+		document.querySelector('#trackList').style.display = "flex";
 }
 function addTracks() {
 	const trackList = document.querySelector('#trackList');
@@ -253,17 +250,6 @@ function addTracks() {
 	let artist = this.parentNode.getAttribute('data-artist');
 	let album = this.parentNode.getAttribute('data-album');
 	trackList.innerHTML=" ";
-	let youtubeAudio = document.querySelector('#youtube-audio');
-	youtubeAudio.innerHTML = '<div id="youtube-player"></div>'
-	let nowPlaying = document.querySelector('#nowPlaying');
-  	/*nowPlaying.id = 'nowPlaying';*/
-  	nowPlaying.innerHTML="Song not found, please try again."
-  	/*youtubeAudio.appendChild(nowPlaying);*/
-	let playerBtn = document.createElement('img');
-  	playerBtn.src = "icons/play.png";
-  	playerBtn.className = "ytImage";
-  	playerBtn.setAttribute("id", "youtube-icon");
-  	youtubeAudio.appendChild(playerBtn);
 	fetch('https://ws.audioscrobbler.com/2.0/?method=album.getInfo&artist='+ artist +'&album='+ album + '&api_key=cb44e36a7f8b0c6427b01d4de757a2ad&format=json', {mode: 'cors'})
     	.then(function(response) {
       		return response.json();
@@ -279,10 +265,7 @@ function addTracks() {
 			poster.src = postersrc;
 			let playerDiv = document.querySelector('#playerDiv');
 			/*playerDiv.appendChild(poster)*/
-			posterdiv.appendChild(poster);
-			/*document.querySelector('.player').prepend(posterdiv);*/
-
-			document.querySelector('#nowPlaying').innerHTML = lastFM.album.tracks.track[0].name;
+			
 			let data = [
 			    {
 			        url: albumURL, // url string rquired
@@ -306,6 +289,10 @@ function addTracks() {
 				track.className = "item wide";
 				track.id = 'track'+i
 				track.innerHTML = "<p>"+trackName+"</p>";
+				track.setAttribute('data-poster', postersrc);
+				track.setAttribute('data-artist', artist);
+				track.setAttribute('data-track', trackName);
+				track.addEventListener('click', newSetVideo);
 				trackList.appendChild(track);
 				let imgdiv = document.createElement('div');
 				imgdiv.className = "imgdiv";
@@ -321,7 +308,7 @@ function addTracks() {
 		  	};
 			ygrab(data, async function(result) {
 				let albumIds = result;
-				document.querySelector('#youtube-audio').setAttribute('data-video', albumIds[0].id);
+				
 				for (let i = 0; i < lastFM.album.tracks.track.length; i++) {
 					let vidId = albumIds[i].id;
 					var e = document.getElementById("track"+i);
@@ -330,7 +317,10 @@ function addTracks() {
 					let icon = document.querySelector('#youtube-icon'+i);
 					icon.id = vidId;
 				};
-			await createPlayer();
+			if (r == undefined) {
+				await createPlayer();
+			}
+		
 			});
   			/*document.querySelector('#listTitle').value = titleCase(album);*/
 		}
@@ -372,8 +362,7 @@ function createPlayer() {
 		      				loop: player.dataset.loop
 		    			},
 		    			events: {
-		      				'onReady': onPlayerReady,
-		      				'onStateChange': onPlayerStateChange
+		      				'onReady': initialize,
 		      				}
 		 			 });
 	function togglePlayButton(play) {    
@@ -397,4 +386,173 @@ function createPlayer() {
 	      togglePlayButton(false); 
 	    }
 	  }
+}
+
+
+/*function onYouTubeIframeAPIReady() {
+    player = new YT.Player('video-placeholder', {
+        width: 600,
+        height: 400,
+        videoId: 'Xa0Q0J5tOP0',
+        playerVars: {
+            color: 'white',
+            playlist: 'taJ60kskkns,FG0fTKAqZ5g'
+        },
+        events: {
+            onReady: initialize
+        }
+    });
+}*/
+
+function initialize(){
+
+    // Update the controls on load
+    updateTimerDisplay();
+    updateProgressBar();
+
+    // Clear any old interval.
+    clearInterval(time_update_interval);
+
+    // Start interval to update elapsed time display and
+    // the elapsed part of the progress bar every second.
+    time_update_interval = setInterval(function () {
+        updateTimerDisplay();
+        updateProgressBar();
+    }, 1000);
+
+
+    $('#volume-input').val(Math.round(r.getVolume()));
+}
+
+
+// This function is called by initialize()
+function updateTimerDisplay(){
+    // Update current time text display.
+    $('#current-time').text(formatTime( r.getCurrentTime() ));
+    $('#duration').text(formatTime( r.getDuration() ));
+}
+
+
+// This function is called by initialize()
+function updateProgressBar(){
+    // Update the value of our progress bar accordingly.
+    $('#progress-bar').val((r.getCurrentTime() / r.getDuration()) * 100);
+}
+
+
+// Progress bar
+
+$('#progress-bar').on('mouseup touchend', function (e) {
+
+    // Calculate the new time for the video.
+    // new time in seconds = total duration in seconds * ( value of range input / 100 )
+    var newTime = r.getDuration() * (e.target.value / 100);
+
+    // Skip video to new time.
+    r.seekTo(newTime);
+
+});
+
+
+// Playback
+
+$('#play').on('click', function () {
+    r.playVideo();
+});
+
+
+$('#pause').on('click', function () {
+    r.pauseVideo();
+});
+
+
+// Sound volume
+
+
+$('#mute-toggle').on('click', function() {
+    var mute_toggle = $(this);
+
+    if(r.isMuted()){
+        r.unMute();
+        mute_toggle.text('volume_up');
+    }
+    else{
+        r.mute();
+        mute_toggle.text('volume_off');
+    }
+});
+
+$('#volume-input').on('change', function () {
+    r.setVolume($(this).val());
+});
+
+
+// Other options
+
+
+$('#speed').on('change', function () {
+    r.setPlaybackRate($(this).val());
+});
+
+$('#quality').on('change', function () {
+    r.setPlaybackQuality($(this).val());
+});
+
+
+// Playlist
+
+$('#next').on('click', function () {
+    r.nextVideo()
+});
+
+$('#prev').on('click', function () {
+    r.previousVideo()
+});
+
+
+// Load video
+
+$('#track0').on('click', function () {
+
+    var url = $(this).attr('data-video-id');
+
+    console.log(url);
+
+});
+function newSetVideo(){
+	console.log(this.getAttribute('data-video'))
+	r.cueVideoById(this.getAttribute('data-video'));
+	document.querySelector('#nowPlaying').innerHTML = this.getAttribute('data-track') +" - "+ this.getAttribute('data-artist');
+	console.log(this.firstChild.innerHTML);
+	r.playVideo()
+	console.log(this.getAttribute('data-track'))
+	trackInfo(this.id,this.getAttribute('data-artist'),this.getAttribute('data-track'));
+	//let postersrc = this.getAttribute('data-poster');
+	//let posterdiv = document.querySelector('.poster');
+	/*posterdiv.className = "poster";*/
+	//let poster = document.createElement('img');
+	/*poster.id = 'poster';*/
+	//poster.src = postersrc;
+	//let playerDiv = document.querySelector('#playerDiv');
+	/*playerDiv.appendChild(poster)*/
+	//posterdiv.innerHTML = "";
+	//posterdiv.appendChild(poster);
+	//posterdiv.style.display = "flex";
+	/*document.querySelector('.player').prepend(posterdiv);*/
+
+}
+
+
+
+// Helper Functions
+
+function formatTime(time){
+    time = Math.round(time);
+
+    var minutes = Math.floor(time / 60),
+        seconds = time - minutes * 60;
+
+    seconds = seconds < 10 ? '0' + seconds : seconds;
+
+    return minutes + ":" + seconds;
 }
