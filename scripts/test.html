@@ -1,31 +1,28 @@
-<script src="jquery-2.2.4.min.js"></script>
-<script src="ygrab.js"></script>
-<script>        
-$(function() {
+<html>
 
-var data = [
-    {
-        url: 'https://www.last.fm/music/Die+Antwoord/%2Btracks', // url string rquired
-        selector: 'td.chartlist-play', // selector string rquired
-        loop: true, // each boolean rquired
-        result: [
-			            {
-			                name: 'id', // key string rquired
-			                find: 'a', // selector child string rquired
-			                grab: {
-			                    by: 'attr', // attribut string rquired
-			                    value: 'data-youtube-id' // attribut value string optional
-			                }
-			            }			    
-			        ]
-    },
-    // ---- new website url ---- //
-];
+<head></head>
 
-ygrab(data, function(result) {
-	console.log(JSON.stringify(result, null, 2));
-});
+<body>
 
+   <canvas id="output" height="500" width="500"></canvas>
 
-});
-</script>
+   <script src="https://cdn.jsdelivr.net/gh/foobar404/wave.js/dist/bundle.iife.js"></script>
+   <script>
+      let wave = new Wave();
+
+      navigator.mediaDevices.getUserMedia({
+            audio: true
+         })
+         .then(function (stream) {
+            wave.fromStream(stream, "output", {
+               type: "shine",
+               colors: ["red", "white", "blue"]
+            });
+         })
+         .catch(function (err) {
+            console.log(err.message)
+         });
+   </script>
+</body>
+
+</html>

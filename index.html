@@ -1,94 +1,79 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Songify</title>
-	<link rel="stylesheet" type="text/css" href="styles/style.css">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png">
-<link rel="manifest" href="favicons/site.webmanifest">
-	<meta charset="UTF-8">
-</head>
-<body>
-<main>
-<header>
-	<div id="back"><</div>
-	<h1><a href="https://benmicol.com/songify">Songify</a></h1>
-</header>
-<div><h1><a href="https://benmicol.com/songify">Songify</a></h1></div>
-
-<div class="container">
-	<div class="music">
-		<ul class="input">
-			<li class="item disappear" id="disappearT">
-				<input type="text" class="textInput" id="artist" placeholder="Artist (Albums)">
-				<!--<input type="text" class="textInput" id="album" placeholder="Album">
-				<input type="button" class="buttonInput" id="addButtonU" value="Tracks">-->
-				<input type="button" class="buttonInput" id="addButtonT" value="Go">
-			</li>
-			<li class="item disappear" id="disappearW">
-				<input type="text" class="textInput" id="tracks" placeholder="Artist (Tracks)">
-				<!--<input type="text" class="textInput" id="album" placeholder="Album">-->
-				<input type="button" class="buttonInput" id="addButtonU" value="Go">
-			</li>
-			<li class="item disappear" id="disappearV">
-				<input type="text" class="textInput" id="song" placeholder="Track Search">
-				<!--<input type="text" class="textInput" id="album" placeholder="Album">-->
-				<input type="button" class="buttonInput" id="addButtonV" value="Go">
-			</li>
-		</ul>
-		<ul class="list" id="trackList">
-		</ul>
-	</div>
-	
-</div>
-<div class="player" id="playerDiv">
-	<div class="poster"></div>
-	
-	<div id="controls">
-		<div id="nowPlaying"></div>
-		<div id="progress">
-			<input type="range" id="progress-bar" value="0">
+	<head>
+		<title>Songify</title>
+		<link rel="stylesheet" type="text/css" href="styles/style.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+		<link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png">
+		<link rel="manifest" href="favicons/site.webmanifest">
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		<main>
+			<header>
+				<div id="back"><</div>
+				<h1><a href="https://benmicol.com/songify">Songify</a></h1>
+			</header>
+			<div class="container">
+				<div class="music">
+					<ul class="input">
+						<li class="item disappear" id="disappearT">
+							<input type="text" class="textInput" id="artist" placeholder="Artist (Albums)">
+							<input type="button" class="buttonInput" id="addButtonT" value="Go">
+						</li>
+						<li class="item disappear" id="disappearW">
+							<input type="text" class="textInput" id="tracks" placeholder="Artist (Tracks)">
+							<input type="button" class="buttonInput" id="addButtonU" value="Go">
+						</li>
+						<li class="item disappear" id="disappearV">
+							<input type="text" class="textInput" id="song" placeholder="Track Search">
+							<input type="button" class="buttonInput" id="addButtonV" value="Go">
+						</li>
+					</ul>
+					<ul class="list" id="trackList">
+					</ul>
+				</div>
 			</div>
-		<ul>
-			<li>
-				<p id="timer"><span id="current-time">0:00</span> / <span id="duration">0:00</span></p>			
-			</li>
-			<!--<li>
-				<input type="range" id="progress-bar" value="0">
-			</li>-->
-			<li>
-				<i id="play" class="material-icons">play_arrow</i>
-			</li>
-			<li>
-				<i id="pause" class="material-icons">pause</i>
-			</li>
-			<li>
-				<i id="mute-toggle" class="material-icons">volume_up</i>
-			</li>
-			<!--<li>				
-				<input id="volume-input" type="number" max="100" min="0">
-			</li>
-			<li>
-				<i id="next" class="material-icons">fast_forward</i>	
-			</li>-->
-		</ul>
-		
-	</div>
-	<div id="youtube-audio" class="item" data-autoplay="0" data-loop="1" data-video="">
-		<div id="youtube-player">
-			<div id="youtube-player"></div>
-		</div>					
-	</div>
-</div>
-<div class="player2" id="playerDiv2">
-	<h2>Test</h2>
-</div>
-</main>
-<script src="https://www.youtube.com/iframe_api"></script>
-<script src="scripts/jquery-2.2.4.min.js"></script>
-<script src="scripts/ygrab.js"></script>
-<script src="scripts/script.js"></script>
-</body>
+			<div class="player" id="playerDiv">
+				<div class="poster"></div>
+				<div id="controls">
+					<div id="nowPlaying"></div>
+					<div id="progress">
+						<input type="range" id="progress-bar" value="0">
+					</div>
+					<ul>
+						<li>
+							<p id="timer"><span id="current-time">0:00</span> / <span id="duration">0:00</span></p>			
+						</li>
+						<li>
+							<i id="play" class="material-icons">play_arrow</i>
+						</li>
+						<li>
+							<i id="pause" class="material-icons">pause</i>
+						</li>
+						<li>
+							<i id="mute-toggle" class="material-icons">volume_up</i>
+						</li>
+						<!--<li>				
+							<input id="volume-input" type="number" max="100" min="0">
+						</li>
+						<li>
+							<i id="next" class="material-icons">fast_forward</i>	
+						</li>-->
+					</ul>		
+				</div>
+				<div id="youtube-audio" class="item" data-autoplay="0" data-loop="1" data-video="">
+					<div id="youtube-player">
+						<div id="youtube-player"></div>
+					</div>					
+				</div>
+			</div>
+		</main>
+		<script src="https://www.youtube.com/iframe_api"></script>
+		<script src="scripts/jquery-2.2.4.min.js"></script>
+		<script src="scripts/ygrab.js"></script>
+		<script src="scripts/test.js"></script>
+	</body>
 </html>
