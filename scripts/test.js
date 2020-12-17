@@ -39,7 +39,7 @@ function trackInfo(id,artist, song){
 		})
 }
 function addAlbums() {
-	let artist = document.getElementById('artist').value;
+	let artist = artistInput.value;
 	fetch('https://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist='+artist+ apiKey, {mode: 'cors'})
     	.then(function(response) {
       		return response.json();
@@ -119,8 +119,6 @@ function generateTracks(tracks,url,type){
     });
 }
 function tracks(){
-    
-   
     trackList.style.display = "space-between";
     trackList.innerHTML = " ";
     if (songInput.value != ""){
@@ -250,19 +248,19 @@ document.querySelector('#addButtonT').addEventListener('click', addAlbums);
 document.querySelector('#addButtonU').addEventListener('click', tracks);
 document.querySelector('#addButtonV').addEventListener('click', tracks);
 document.querySelector('#back').addEventListener('click', clearText);
-document.querySelector('#artist').addEventListener('keydown', event => {
+artistInput.addEventListener('keydown', event => {
     if (event.isComposing || event.keyCode === 229) {
         return;
     } else if (event.keyCode === 13) {
         addAlbums();
     }});
-document.querySelector('#tracks').addEventListener('keydown', event => {
+tracksInput.addEventListener('keydown', event => {
     if (event.isComposing || event.keyCode === 229) {
         return;
     } else if (event.keyCode === 13) {
         tracks();
     }});
-document.querySelector('#song').addEventListener('keydown', event => {
+songInput.addEventListener('keydown', event => {
     if (event.isComposing || event.keyCode === 229) {
         return;
     } else if (event.keyCode === 13) {
